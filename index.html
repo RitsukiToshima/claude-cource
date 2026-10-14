@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>タイピングスピード</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>⌨️ タイピングスピード</h1>
+      <p class="subtitle">制限時間内にどれだけ速く・正確に打てるか競おう！</p>
+    </header>
+
+    <!-- スタート画面 -->
+    <section id="screen-start" class="screen active">
+      <div class="settings">
+        <label>
+          プレイヤー名
+          <input id="player-name" type="text" maxlength="12" placeholder="なまえ" autocomplete="off">
+        </label>
+        <label>
+          モード
+          <select id="mode">
+            <option value="english">英単語</option>
+            <option value="japanese">日本語（ローマ字）</option>
+            <option value="programming">プログラミング用語</option>
+          </select>
+        </label>
+        <label>
+          制限時間
+          <select id="duration">
+            <option value="30">30秒</option>
+            <option value="60" selected>60秒</option>
+            <option value="90">90秒</option>
+          </select>
+        </label>
+      </div>
+      <button id="start-btn" class="btn primary">スタート（Space）</button>
+
+      <div class="ranking">
+        <h2>🏆 ランキング <span id="ranking-label" class="muted"></span></h2>
+        <ol id="ranking-list"></ol>
+        <button id="clear-ranking" class="btn link">ランキングをリセット</button>
+      </div>
+    </section>
+
+    <!-- カウントダウン -->
+    <section id="screen-countdown" class="screen">
+      <div id="countdown" class="countdown">3</div>
+    </section>
+
+    <!-- プレイ画面 -->
+    <section id="screen-play" class="screen">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">残り</span><span id="time-left" class="hud-value">60</span></div>
+        <div class="hud-item"><span class="hud-label">打鍵数</span><span id="score" class="hud-value">0</span></div>
+        <div class="hud-item"><span class="hud-label">ミス</span><span id="miss" class="hud-value">0</span></div>
+        <div class="hud-item"><span class="hud-label">コンボ</span><span id="combo" class="hud-value">0</span></div>
+      </div>
+      <div class="timebar"><div id="timebar-fill" class="timebar-fill"></div></div>
+
+      <div class="word-box" id="word-box">
+        <div id="word-display" class="word-display"></div>
+        <div id="word-romaji" class="word-romaji"></div>
+      </div>
+      <p class="hint muted">表示された文字をそのまま入力してください（Escで中断）</p>
+    </section>
+
+    <!-- 結果画面 -->
+    <section id="screen-result" class="screen">
+      <h2>結果</h2>
+      <div id="rank-badge" class="rank-badge">A</div>
+      <div class="result-grid">
+        <div class="result-item"><span class="result-label">スコア</span><span id="r-score" class="result-value">0</span></div>
+        <div class="result-item"><span class="result-label">打鍵/分</span><span id="r-kpm" class="result-value">0</span></div>
+        <div class="result-item"><span class="result-label">正確率</span><span id="r-accuracy" class="result-value">0%</span></div>
+        <div class="result-item"><span class="result-label">完成ワード</span><span id="r-words" class="result-value">0</span></div>
+        <div class="result-item"><span class="result-label">正しい打鍵</span><span id="r-correct" class="result-value">0</span></div>
+        <div class="result-item"><span class="result-label">最大コンボ</span><span id="r-combo" class="result-value">0</span></div>
+      </div>
+      <p id="new-record" class="new-record" hidden>🎉 自己ベスト更新！</p>
+      <div class="result-actions">
+        <button id="retry-btn" class="btn primary">もう一度（Space）</button>
+        <button id="home-btn" class="btn">タイトルへ（Esc）</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="words.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

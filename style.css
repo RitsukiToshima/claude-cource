@@ -1,0 +1,241 @@
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --primary: #4f6df5;
+  --primary-dark: #3b55d1;
+  --correct: #16a34a;
+  --wrong: #dc2626;
+  --border: #e3e7ef;
+  --shadow: 0 8px 24px rgba(31, 36, 48, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151d;
+    --card: #1c212c;
+    --text: #e8ebf2;
+    --muted: #9aa3b5;
+    --primary: #6d86ff;
+    --primary-dark: #5670f0;
+    --correct: #4ade80;
+    --wrong: #f87171;
+    --border: #2c3342;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px;
+}
+
+.app {
+  width: 100%;
+  max-width: 720px;
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+}
+
+.header { text-align: center; margin-bottom: 24px; }
+.header h1 { margin: 0 0 4px; font-size: 1.8rem; }
+.subtitle, .muted { color: var(--muted); }
+.subtitle { margin: 0; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* スタート画面 */
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.settings input, .settings select {
+  font: inherit;
+  font-size: 1rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.btn {
+  font: inherit;
+  font-size: 1rem;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.05s, background 0.15s;
+}
+.btn:active { transform: scale(0.98); }
+.btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: bold;
+}
+.btn.primary:hover { background: var(--primary-dark); }
+#start-btn { display: block; width: 100%; font-size: 1.15rem; padding: 16px; }
+.btn.link {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.ranking { margin-top: 32px; }
+.ranking h2 { font-size: 1.15rem; margin-bottom: 8px; }
+.ranking h2 span { font-size: 0.85rem; font-weight: normal; }
+#ranking-list { padding-left: 0; list-style: none; margin: 0 0 8px; counter-reset: rank; }
+#ranking-list li {
+  counter-increment: rank;
+  display: grid;
+  grid-template-columns: 2.5em 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+#ranking-list li::before { content: counter(rank) "位"; font-weight: bold; color: var(--muted); }
+#ranking-list li:nth-child(1)::before { content: "🥇"; }
+#ranking-list li:nth-child(2)::before { content: "🥈"; }
+#ranking-list li:nth-child(3)::before { content: "🥉"; }
+#ranking-list li.empty { display: block; color: var(--muted); }
+#ranking-list li.empty::before { content: none; }
+.rank-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-score { font-weight: bold; }
+.rank-meta { color: var(--muted); font-size: 0.8rem; }
+
+/* カウントダウン */
+.countdown {
+  font-size: 6rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--primary);
+  padding: 60px 0;
+  animation: pop 1s ease-out infinite;
+}
+@keyframes pop {
+  0% { transform: scale(1.4); opacity: 0.3; }
+  30% { transform: scale(1); opacity: 1; }
+}
+
+/* プレイ画面 */
+.hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+.hud-item { display: flex; flex-direction: column; }
+.hud-label { font-size: 0.8rem; color: var(--muted); }
+.hud-value { font-size: 1.6rem; font-weight: bold; font-variant-numeric: tabular-nums; }
+
+.timebar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 12px 0 32px;
+}
+.timebar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--primary);
+  transition: width 0.1s linear;
+}
+.timebar-fill.danger { background: var(--wrong); }
+
+.word-box {
+  text-align: center;
+  padding: 32px 8px;
+  border-radius: 12px;
+  background: var(--bg);
+  min-height: 160px;
+}
+.word-box.shake { animation: shake 0.2s; }
+@keyframes shake {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.word-display { font-size: 2.2rem; font-weight: bold; margin-bottom: 12px; word-break: break-all; }
+.word-romaji {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+.word-romaji .typed { color: var(--correct); }
+.word-romaji .current { text-decoration: underline; text-underline-offset: 6px; }
+.word-romaji .rest { color: var(--muted); }
+.hint { text-align: center; font-size: 0.85rem; margin-top: 16px; }
+
+/* 結果画面 */
+#screen-result h2 { text-align: center; margin: 0; }
+.rank-badge {
+  width: 96px;
+  height: 96px;
+  margin: 16px auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  background: var(--primary);
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.result-item {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.result-label { font-size: 0.8rem; color: var(--muted); }
+.result-value { font-size: 1.5rem; font-weight: bold; font-variant-numeric: tabular-nums; }
+.new-record { text-align: center; font-weight: bold; color: var(--correct); }
+.result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 480px) {
+  .app { padding: 24px 16px; }
+  .result-grid { grid-template-columns: repeat(2, 1fr); }
+  .hud-value { font-size: 1.3rem; }
+  .word-display { font-size: 1.7rem; }
+  .word-romaji { font-size: 1.4rem; }
+}
